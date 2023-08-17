@@ -16,3 +16,10 @@ export type Props = {
 interface IlocalProps {
   setTest: () => void;
 }
+
+export interface KanBanCardProps {
+  id: number;
+  title: string;
+  content: string;
+  category: string;
+}

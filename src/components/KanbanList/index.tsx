@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import Button from '../Button';
-const index = (props: { title: string }) => {
+const index = (props: { title: string; children: any }) => {
   return (
     <KanbanListBox>
       <Title> {props.title}</Title>
       <KanbanList>
-        <Button />
+        {props.children}
+        <Button title={props.title} />
       </KanbanList>
     </KanbanListBox>
   );

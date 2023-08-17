@@ -1,13 +1,11 @@
 import Head from 'next/head';
 import Image from 'next/image';
-import { Inter } from 'next/font/google';
 import { useRecoilValue } from 'recoil';
 import { kanbanList } from '../../atom/kanbanBoard';
-
+import KanbanCard from '../components/KanBanCard';
 import styled from '@emotion/styled';
 import KanBanBox from '../components/KanbanList';
-const inter = Inter({ subsets: ['latin'] });
-
+import { KanBanCardProps } from '../../types';
 export default function Home() {
   const kanbanFrame = useRecoilValue(kanbanList);
   const kanbanName = [
@@ -28,7 +26,15 @@ export default function Home() {
       title: 'Done',
     },
   ];
-  console.log('kanbanName ', kanbanName);
+  const cardDataHandler = (title: string) => {
+    // 카드 나열해주기 위한 함수
+    return kanbanFrame
+      .filter((data: KanBanCardProps) => data.category === title)
+      .map((item: KanBanCardProps, idx) => (
+        <KanbanCard key={idx} item={item} />
+      ));
+  };
+
   return (
     <>
       <Head>
@@ -40,7 +46,11 @@ export default function Home() {
       <KanbanListBox>
         {kanbanName &&
           kanbanName.map((item: any) => {
-            return <KanBanBox key={item.id} title={item.title} />;
+            return (
+              <KanBanBox key={item.id} title={item.title}>
+                {cardDataHandler(item.title)}
+              </KanBanBox>
+            );
           })}
       </KanbanListBox>
     </>
