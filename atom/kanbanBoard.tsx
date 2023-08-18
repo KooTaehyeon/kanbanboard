@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
-
-export const kanbanList = atom<[]>({
+import { KanBanCardProps } from '../types';
+export const kanbanList = atom<KanBanCardProps[]>({
   key: 'kanbanBoard',
   default: [],
 });

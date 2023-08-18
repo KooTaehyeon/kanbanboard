@@ -1,30 +1,37 @@
 import React, { useCallback } from 'react';
 import styled from '@emotion/styled';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { kanbanList } from '../../../atom/kanbanBoard';
 import { KanBanCardProps } from '../../../types';
+import { kanbanModal } from '../../../atom/kanbanModal';
 const KanbanListButton = (props: { title: string }) => {
   const [kanbanListData, setKanbanListData] = useRecoilState<any>(kanbanList);
-  // id 생성
-  const getStateId: number =
-    kanbanListData.length > 0
-      ? kanbanListData[kanbanListData.length - 1].id + 1
-      : 0;
+  const setIsModal = useSetRecoilState<boolean>(kanbanModal);
   const addCardHandler = useCallback(
     (e: React.MouseEvent) => {
-      setKanbanListData((prev: KanBanCardProps[]) => {
-        [
-          ...prev,
+      if (kanbanListData.length === 0) {
+        setKanbanListData([
           {
-            id: getStateId,
+            id: kanbanListData.length + 1,
             title: '',
             content: '',
             category: props.title,
           },
-        ];
-      });
+        ]);
+      } else {
+        setKanbanListData([
+          ...kanbanListData,
+          {
+            id: kanbanListData.length + 1,
+            title: '',
+            content: '',
+            category: props.title,
+          },
+        ]);
+      }
+      setIsModal((prev) => !prev);
     },
-    [getStateId, props.title, setKanbanListData]
+    [kanbanListData, props.title, setIsModal, setKanbanListData]
   );
 
   return <Btn onClick={addCardHandler}>+Add</Btn>;
