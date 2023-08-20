@@ -6,6 +6,8 @@ import KanbanCard from '../components/KanBanCard';
 import styled from '@emotion/styled';
 import KanBanBox from '../components/KanbanList';
 import { KanBanCardProps } from '../../types';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 export default function Home() {
   const kanbanFrame = useRecoilValue(kanbanList);
   const kanbanName = [
@@ -45,14 +47,16 @@ export default function Home() {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
       </Head>
       <KanbanListBox>
-        {kanbanName &&
-          kanbanName.map((item: any) => {
-            return (
-              <KanBanBox key={item.id} title={item.title}>
-                {cardDataHandler(item.title)}
-              </KanBanBox>
-            );
-          })}
+        <DndProvider backend={HTML5Backend}>
+          {kanbanName &&
+            kanbanName.map((item: any) => {
+              return (
+                <KanBanBox key={item.id} title={item.title}>
+                  {cardDataHandler(item.title)}
+                </KanBanBox>
+              );
+            })}
+        </DndProvider>
       </KanbanListBox>
     </>
   );

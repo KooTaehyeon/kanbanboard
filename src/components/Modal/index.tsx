@@ -4,6 +4,7 @@ import { KanBanCardProps } from '../../../types';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { kanbanList } from '../../../atom/kanbanBoard';
 import { kanbanModal } from '../../../atom/kanbanModal';
+
 const Modal = (props: { item: KanBanCardProps }) => {
   const [list, setList] = useRecoilState<any>(kanbanList);
   const setIsModal = useSetRecoilState<boolean>(kanbanModal);
@@ -11,7 +12,6 @@ const Modal = (props: { item: KanBanCardProps }) => {
   const onCloseHandler = (e: React.MouseEvent) => {
     setIsModal((prev: boolean) => !prev);
   };
-  console.log(props.item, 'item');
 
   const replaceIndex = (
     list: KanBanCardProps[],
@@ -41,6 +41,7 @@ const Modal = (props: { item: KanBanCardProps }) => {
     setList(newListArr);
     setIsModal((prev: boolean) => !prev);
   };
+  console.log(props.item, 'ahekf');
 
   return (
     <>
@@ -63,8 +64,8 @@ const Modal = (props: { item: KanBanCardProps }) => {
           onChange={editContentHandler}
         />
         <div className='btn'>
-          <div onClick={onCloseHandler}>수정하기</div>
-          <div onClick={deleteHandler}>삭제하기</div>
+          <div onClick={onCloseHandler}>등록 및 수정</div>
+          <div onClick={deleteHandler}>삭제 하기</div>
         </div>
       </ModalBox>
     </>

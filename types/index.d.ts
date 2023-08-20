@@ -23,3 +23,7 @@ export interface KanBanCardProps {
   content: string;
   category: string;
 }
+interface drop {
+  dropEffect: string;
+  name: string;
+}

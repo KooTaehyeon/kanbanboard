@@ -1,9 +1,20 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import Button from '../Button';
-const index = (props: { title: string; children: any }) => {
+import { useDrop } from 'react-dnd';
+const Card = (props: { title: string; children: any }) => {
+  const [{ isOver, canDrop }, drop] = useDrop({
+    accept: 'card',
+    drop: () => ({ name: props.title }),
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+  });
+  console.log(isOver, canDrop, 'liost');
+
   return (
-    <KanbanListBox>
+    <KanbanListBox ref={drop}>
       <Title> {props.title}</Title>
       <KanbanList>{props.children}</KanbanList>
       <Button title={props.title} />
@@ -27,4 +38,4 @@ const KanbanList = styled.div`
   height: auto;
 `;
 
-export default index;
+export default Card;
