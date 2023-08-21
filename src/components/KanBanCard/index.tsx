@@ -1,13 +1,12 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef } from 'react';
 import styled from '@emotion/styled';
 import { KanBanCardProps, drop } from '../../../types';
 import { useRecoilState } from 'recoil';
-import Modal from '../Modal';
-import { kanbanModal } from '../../../atom/kanbanModal';
 import { kanbanList } from '../../../atom/kanbanBoard';
 import { useDrag } from 'react-dnd';
+import Image from 'next/image';
+import cancel from '../../../public/img/cancel.png';
 const KanBanCard = (props: { item: KanBanCardProps }) => {
-  const [isModal, setIsModal] = useRecoilState<boolean>(kanbanModal);
   const [list, setList] = useRecoilState<KanBanCardProps[]>(kanbanList);
   const index = list.findIndex((data) => data === props.item);
   const ref = useRef<HTMLTextAreaElement>(null);
@@ -37,13 +36,12 @@ const KanBanCard = (props: { item: KanBanCardProps }) => {
       (item: KanBanCardProps) => item.id !== props.item.id
     );
     setList(newListArr);
-    setIsModal((prev: boolean) => !prev);
   };
   const handleResizeHeight = useCallback(() => {
     if (ref === null || ref.current === null) {
       return;
     }
-    ref.current.style.height = '70px';
+    ref.current.style.height = '50px';
     ref.current.style.height = ref.current.scrollHeight + 'px';
   }, []);
   const changeItemCategory = (selectedItem: KanBanCardProps, title: string) => {
@@ -57,14 +55,12 @@ const KanBanCard = (props: { item: KanBanCardProps }) => {
         };
       });
     });
-    console.log(list, 'list');
   };
   const [{ isDragging }, dragRef] = useDrag(() => ({
     type: 'card',
     item: props.item,
     end: (item: KanBanCardProps, monitor) => {
-      const dropResult: any = monitor.getDropResult<any>();
-      console.log(dropResult);
+      const dropResult: drop | null = monitor.getDropResult<any>();
 
       if (dropResult) {
         switch (dropResult.name) {
@@ -89,18 +85,25 @@ const KanBanCard = (props: { item: KanBanCardProps }) => {
   }));
 
   return (
-    <div ref={dragRef} style={{ opacity: isDragging ? '0.3' : '1' }}>
+    <Card ref={dragRef} style={{ opacity: isDragging ? '0.3' : '1' }}>
       <div>
-        <span>{props.item.category}</span>
-        <img src='../' alt='delete' onClick={deleteHandler} />
+        <CardTitle
+          type='text'
+          value={props.item.title}
+          onChange={editTitleHandler}
+          placeholder='제목을 입력하세요'
+        />
+        <Image
+          style={{ position: 'relative', top: '9px', cursor: 'pointer' }}
+          src={cancel}
+          width={12}
+          height={12}
+          alt='delete'
+          onClick={deleteHandler}
+        />
       </div>
-      <input
-        type='text'
-        value={props.item.title}
-        onChange={editTitleHandler}
-        placeholder='제목을 입력하세요'
-      />
-      <textarea
+
+      <CardContent
         value={props.item.content}
         onChange={editContentHandler}
         onInput={handleResizeHeight}
@@ -108,7 +111,7 @@ const KanBanCard = (props: { item: KanBanCardProps }) => {
         placeholder='내용을 입력하세요'
         spellCheck='false'
       />
-    </div>
+    </Card>
   );
 };
 
@@ -122,15 +125,31 @@ const Card = styled.div`
     border: 1px solid #00aaff;
   }
 `;
-const CardTitle = styled.div`
-  margin: 0 auto;
-  text-align: center;
-  width: 100%;
-  line-height: 33px;
-  cursor: pointer;
-  &:hover {
-    color: #00aaff;
-  }
+
+const CardTitle = styled.input`
+  width: 90%;
+  margin: 10px 0 5px 0;
+  padding: 0px 5px;
+  border: none;
+  outline: 0;
+  font-size: 14px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  background-color: none;
+  background: transparent;
+  color: #000000;
 `;
-// const CardContent = styled.div``;
+const CardContent = styled.textarea`
+  height: 50px;
+  border: none;
+  padding: 0px 5px;
+  outline: 0;
+  resize: none;
+  overflow: visible;
+  font-size: 13px;
+  font-weight: 300;
+  background-color: none;
+  background: transparent;
+  color: #000000;
+`;
 export default KanBanCard;

@@ -36,7 +36,6 @@ export default function Home() {
         <KanbanCard key={idx} item={item} />
       ));
   };
-  console.log(kanbanFrame, 'kanbanFrame');
 
   return (
     <>

@@ -3,10 +3,8 @@ import styled from '@emotion/styled';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { kanbanList } from '../../../atom/kanbanBoard';
 import { KanBanCardProps } from '../../../types';
-import { kanbanModal } from '../../../atom/kanbanModal';
 const KanbanListButton = (props: { title: string }) => {
   const [kanbanListData, setKanbanListData] = useRecoilState<any>(kanbanList);
-  const setIsModal = useSetRecoilState<boolean>(kanbanModal);
   const addCardHandler = useCallback(
     (e: React.MouseEvent) => {
       if (kanbanListData.length === 0) {
@@ -29,9 +27,8 @@ const KanbanListButton = (props: { title: string }) => {
           },
         ]);
       }
-      setIsModal((prev) => !prev);
     },
-    [kanbanListData, props.title, setIsModal, setKanbanListData]
+    [kanbanListData, props.title, setKanbanListData]
   );
 
   return <Btn onClick={addCardHandler}>+Add</Btn>;

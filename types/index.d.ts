@@ -12,18 +12,13 @@ export type ReactNode =
 export type Props = {
   children: ReactNode;
 };
-
-interface IlocalProps {
-  setTest: () => void;
-}
-
 export interface KanBanCardProps {
   id: number;
   title: string;
   content: string;
   category: string;
 }
-interface drop {
+export interface drop {
   dropEffect: string;
   name: string;
 }

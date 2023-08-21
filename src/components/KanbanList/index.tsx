@@ -11,7 +11,6 @@ const Card = (props: { title: string; children: any }) => {
       canDrop: monitor.canDrop(),
     }),
   });
-  console.log(isOver, canDrop, 'liost');
 
   return (
     <KanbanListBox ref={drop}>
