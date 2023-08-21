@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import Image from 'next/image';
 import { useRecoilValue } from 'recoil';
 import { kanbanList } from '../../atom/kanbanBoard';
 import KanbanCard from '../components/KanBanCard';
@@ -9,8 +8,9 @@ import { KanBanCardProps } from '../../types';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 export default function Home() {
-  const kanbanFrame = useRecoilValue(kanbanList);
+  const kanbanFrame = useRecoilValue(kanbanList); // 카드 내부에 보여질 데이터목록
   const kanbanName = [
+    //카드 박스 영역
     {
       id: 1,
       title: 'Back log',
@@ -41,7 +41,7 @@ export default function Home() {
     <>
       <Head>
         <title>KanbanBoard</title>
-        <meta name='description' content='next를 활용한 칸반보드!' />
+        <meta name='description' content='Ts 와 Recoil 활용한 칸반보드!' />
         <meta name='theme-color' content='#4E534E' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
       </Head>

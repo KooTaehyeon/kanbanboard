@@ -39,4 +39,4 @@ const Btn = styled.div`
   cursor: pointer;
 `;
 
-export default KanbanListButton;
+export default React.memo(KanbanListButton);

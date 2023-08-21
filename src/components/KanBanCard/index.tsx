@@ -15,9 +15,11 @@ const KanBanCard = (props: { item: KanBanCardProps }) => {
     index: number,
     data: KanBanCardProps
   ) => {
+    // list text,content value 값 변경 함수
     return [...list.slice(0, index), data, ...list.slice(index + 1)];
   };
   const editTitleHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //title 변경 함수
     const newListArr = replaceIndex(list, index, {
       ...props.item,
       title: e.target.value,
@@ -25,6 +27,7 @@ const KanBanCard = (props: { item: KanBanCardProps }) => {
     setList(newListArr);
   };
   const editContentHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    // content 변경함수
     const newListArr = replaceIndex(list, index, {
       ...props.item,
       content: e.target.value,
@@ -38,6 +41,7 @@ const KanBanCard = (props: { item: KanBanCardProps }) => {
     setList(newListArr);
   };
   const handleResizeHeight = useCallback(() => {
+    // content textarea 동적으로 height 동적으로 커지게 하는 함수
     if (ref === null || ref.current === null) {
       return;
     }
@@ -45,9 +49,8 @@ const KanBanCard = (props: { item: KanBanCardProps }) => {
     ref.current.style.height = ref.current.scrollHeight + 'px';
   }, []);
   const changeItemCategory = (selectedItem: KanBanCardProps, title: string) => {
-    console.log(selectedItem.id, 'selectedItem');
+    // 드래그 후 dreg된 카드가 Category로 변경되는 함수
     setList((prev) => {
-      console.log(title, 'prev', selectedItem.category);
       return prev.map((e) => {
         return {
           ...e,
@@ -57,9 +60,13 @@ const KanBanCard = (props: { item: KanBanCardProps }) => {
     });
   };
   const [{ isDragging }, dragRef] = useDrag(() => ({
+    // isDragging 는 card가 드래깅 중일때 true 이며 아닐때는 false 로 리턴해줌
+    // dragRef 는 드래그 될 부분에 ref를 적용시켜줌
     type: 'card',
-    item: props.item,
+    item: props.item, // 드래그될 card에 넣어질 정보
+
     end: (item: KanBanCardProps, monitor) => {
+      // 드래그가 끝나고 dropResult 값에 따라 작동할 코드
       const dropResult: drop | null = monitor.getDropResult<any>();
 
       if (dropResult) {
@@ -80,6 +87,7 @@ const KanBanCard = (props: { item: KanBanCardProps }) => {
       }
     },
     collect: (monitor) => ({
+      // 현재 드래깅중인지 확인
       isDragging: monitor.isDragging(),
     }),
   }));
@@ -152,4 +160,4 @@ const CardContent = styled.textarea`
   background: transparent;
   color: #000000;
 `;
-export default KanBanCard;
+export default React.memo(KanBanCard);

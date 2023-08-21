@@ -4,11 +4,12 @@ import Button from '../Button';
 import { useDrop } from 'react-dnd';
 const Card = (props: { title: string; children: any }) => {
   const [{ isOver, canDrop }, drop] = useDrop({
-    accept: 'card',
+    accept: 'card', // useDrag의 type 과 이름이 같아야함
     drop: () => ({ name: props.title }),
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
+      // drag 진행할 동안 canDrop 는 true 이며 drop할 영역에 접급시 isOver은 true
     }),
   });
 
@@ -37,4 +38,4 @@ const KanbanList = styled.div`
   height: auto;
 `;
 
-export default Card;
+export default React.memo(Card);
